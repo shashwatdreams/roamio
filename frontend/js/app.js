@@ -1,4 +1,4 @@
-export const API_BASE = "http://localhost:5001/api/crowd/";
+export const API_BASE = "http://localhost:5001/api/crowd";
 
 export async function fetchData(url) {
   const response = await fetch(url);
@@ -12,7 +12,7 @@ export async function postData(url, data) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   });
-ç
+  
   if (!response.ok) throw new Error("Failed to submit data");
   return await response.json();
 }
