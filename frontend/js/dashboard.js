@@ -1,11 +1,14 @@
 import { fetchData, API_BASE } from "./app.js";
 
-(async () => {
-  const crowdList = document.getElementById("crowd-data");
+const crowdList = document.getElementById("crowd-data");
+const loadingIndicator = document.getElementById("loading-indicator");
+
+
+async function updateDashboard() {
+
+  loadingIndicator.style.display = "block";
 
   try {
-
-    crowdList.innerHTML = "<p>Loading data...</p>";
 
     const data = await fetchData(`${API_BASE}?minutes=30`);
     console.log("Fetched data:", data); 
@@ -27,5 +30,12 @@ import { fetchData, API_BASE } from "./app.js";
     console.error("Error fetching crowd data:", error);
 
     crowdList.innerHTML = `<p style="color: red;">Failed to load crowd data.</p>`;
+  } finally {
+
+    loadingIndicator.style.display = "none";
   }
-})();
+}
+
+updateDashboard();
+
+setInterval(updateDashboard, 30000);
