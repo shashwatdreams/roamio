@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from ..models.crowd import CrowdReport
+from ..models.crowd import CrowdReport, crowd_collection  # Import the collection for querying
 from backend.app.db import db
 from datetime import datetime
 
@@ -32,5 +32,15 @@ def report_crowd():
         
         return jsonify({"message": "Crowd report submitted successfully"}), 200
     
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+@crowd_reporting_bp.route('/', methods=['GET'])
+def get_crowd_reports():
+    try:
+        # Query all crowd reports from the database
+        reports = list(crowd_collection.find({}, {"_id": 0}))  # Exclude MongoDB's `_id` field
+        return jsonify(reports), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
