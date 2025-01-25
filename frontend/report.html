@@ -12,12 +12,27 @@
   </header>
   <main>
     <form id="crowd-report-form">
-      <label for="station">Station:</label>
-      <input type="text" id="station" name="station" required>
-      <br>
+      <label for="borough">Select Borough:</label>
+      <select id="borough" name="borough" required>
+        <option value="">Select a borough</option>
+        <option value="manhattan">Manhattan</option>
+        <option value="queens">Queens</option>
+        <option value="brooklyn">Brooklyn</option>
+        <option value="bronx">Bronx</option>
+        <option value="staten_island">Staten Island</option>
+      </select>
+      <br><br>
+
+      <label for="station">Select Station:</label>
+      <select id="station" name="station" required>
+        <option value="">Select a station</option>
+      </select>
+      <br><br>
+
       <label for="crowd-level">Crowd Level (1-5):</label>
       <input type="number" id="crowd-level" name="crowd-level" min="1" max="5" required>
-      <br>
+      <br><br>
+
       <button type="submit">Submit Report</button>
     </form>
   </main>
