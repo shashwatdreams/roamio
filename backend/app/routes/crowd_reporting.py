@@ -1,3 +1,4 @@
+#Defines /report_crowd endpoint to submit crowd reports
 from flask import Blueprint, request, jsonify
 from ..models.crowd import CrowdReport
 from datetime import datetime

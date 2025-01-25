@@ -1,3 +1,4 @@
+# Defines a CrowdReport class and saves reports to MongoDB
 from pymongo import MongoClient
 from datetime import datetime
 

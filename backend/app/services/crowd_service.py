@@ -1,3 +1,4 @@
+#Provides the logic for retreiving reports and calculating average crowd levels
 from ..models.crowd import crowd_collection
 from datetime import datetime, timedelta
 
