@@ -1,9 +1,6 @@
-# Defines a CrowdReport class and saves reports to MongoDB
-from pymongo import MongoClient
 from datetime import datetime
+from backend.app.db import db
 
-client = MongoClient("mongodb://localhost:27017/")
-db = client["roamio"]
 crowd_collection = db["crowd_reports"]
 
 class CrowdReport:
@@ -13,7 +10,7 @@ class CrowdReport:
         self.crowd_level = crowd_level
         self.train_id = train_id
         self.additional_info = additional_info
-    
+
     def save(self):
         crowd_collection.insert_one({
             "station": self.station,
