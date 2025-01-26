@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NYC Subway Map</title>
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>  
   <style>
@@ -27,6 +27,6 @@
     <h1>NYC Subway Map</h1>
     <div id="map"></div>
   </main>
-  <script src="js/map.js" type="module"></script>
+  <script src="{{ url_for('static', filename='js/map.js') }}"></script>
 </body>
 </html>
