@@ -1,100 +1,52 @@
 import { postData, API_BASE } from "./app.js";
 
 const stationsWithCoordinates = {
-  manhattan: {
-    "Times Square - 42nd St": [40.755290, -73.987495],
-    "Grand Central - 42nd St": [40.752726, -73.977229],
-    "125th St": [40.804138, -73.937594],
-    "Columbus Circle - 59th St": [40.768247, -73.981929],
-  },
-  queens: {
-    "Flushing - Main St": [40.759599, -73.830314],
-    "Jackson Heights - Roosevelt Ave": [40.746644, -73.891338],
-    "Astoria - Ditmars Blvd": [40.775036, -73.912034],
-  },
-  brooklyn: {
-    "Atlantic Ave - Barclays Center": [40.683595, -73.978689],
-    "Coney Island - Stillwell Ave": [40.577281, -73.981410],
-    "Bedford Ave": [40.717930, -73.956589],
-  },
-  bronx: {
-    "Yankee Stadium - 161st St": [40.827994, -73.925104],
-    "Fordham Rd": [40.862028, -73.897669],
-    "Pelham Bay Park": [40.852462, -73.827798],
-  },
-  staten_island: {
-    "St. George": [40.643748, -74.073440],
-    "Great Kills": [40.551842, -74.151535],
-    "Tottenville": [40.512765, -74.251118],
-  },
+  manhattan: [
+    "Times Square - 42nd St",
+    "Grand Central - 42nd St",
+    "125th St",
+    "Columbus Circle - 59th St",
+  ],
+  queens: [
+    "Flushing - Main St",
+    "Jackson Heights - Roosevelt Ave",
+    "Astoria - Ditmars Blvd",
+  ],
+  brooklyn: [
+    "Atlantic Ave - Barclays Center",
+    "Coney Island - Stillwell Ave",
+    "Bedford Ave",
+  ],
+  bronx: [
+    "Yankee Stadium - 161st St",
+    "Fordham Rd",
+    "Pelham Bay Park",
+  ],
+  staten_island: [
+    "St. George",
+    "Great Kills",
+    "Tottenville",
+  ],
 };
 
 document.addEventListener("DOMContentLoaded", () => {
-
   const boroughSelect = document.getElementById("borough");
-  if (boroughSelect) {
-    boroughSelect.addEventListener("change", (e) => {
-      const borough = e.target.value;
-      const stationSelect = document.getElementById("station");
+  const stationSelect = document.getElementById("station");
 
-      stationSelect.innerHTML = `<option value="">Select a station</option>`;
-      if (stationsWithCoordinates[borough]) {
-        Object.keys(stationsWithCoordinates[borough]).forEach((station) => {
-          const option = document.createElement("option");
-          option.value = station;
-          option.textContent = station;
-          stationSelect.appendChild(option);
-        });
-      }
-    });
-  } else {
-    console.error("Element with id 'borough' not found in the DOM.");
-  }
+  boroughSelect.addEventListener("change", () => {
+    const selectedBorough = boroughSelect.value;
 
-  const crowdReportForm = document.getElementById("crowd-report-form");
-  if (crowdReportForm) {
-    crowdReportForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
+    // Clear the station dropdown
+    stationSelect.innerHTML = `<option value="">Choose Station</option>`;
 
-      const borough = document.getElementById("borough").value;
-      const station = document.getElementById("station").value;
-      const crowdLevel = parseInt(
-        document.getElementById("crowd-level").value,
-        10
-      );
-
-      if (!borough || !station) {
-        alert("Please select a borough and a station.");
-        return;
-      }
-
-      if (isNaN(crowdLevel) || crowdLevel < 1 || crowdLevel > 5) {
-        alert("Please enter a valid crowd level between 1 and 5.");
-        return;
-      }
-
-      const submitButton = document.querySelector("button[type='submit']");
-      submitButton.disabled = true;
-      submitButton.textContent = "Submitting...";
-
-      try {
-        await postData(`${API_BASE}/report_crowd`, {
-          station,
-          crowd_level: crowdLevel,
-        });
-        alert("Report submitted successfully!");
-        crowdReportForm.reset();
-      } catch (error) {
-        console.error("Error submitting report:", error);
-        alert("Failed to submit report. Please try again.");
-      } finally {
-        submitButton.disabled = false;
-        submitButton.textContent = "Submit";
-      }
-    });
-  } else {
-    console.error("Element with id 'crowd-report-form' not found in the DOM.");
-  }
+    if (selectedBorough && stationsWithCoordinates[selectedBorough]) {
+      // Populate the station dropdown
+      stationsWithCoordinates[selectedBorough].forEach((station) => {
+        const option = document.createElement("option");
+        option.value = station;
+        option.textContent = station;
+        stationSelect.appendChild(option);
+      });
+    }
+  });
 });
-
-export { stationsWithCoordinates };
