@@ -1,30 +1,25 @@
 import { stationsWithCoordinates } from "./report.js";
 
-console.log("Starting map script...");
+const map = L.map("map").setView([40.7128, -74.0060], 11);
 
-try {
-  const map = L.map("map").setView([40.7128, -74.0060], 11); 
-  console.log("Map initialized:", map);
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  maxZoom: 19,
+  attribution: '© OpenStreetMap contributors',
+}).addTo(map);
 
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    maxZoom: 19,
-    attribution: '© OpenStreetMap contributors',
-  }).addTo(map);
-  console.log("Tile layer added successfully");
+let currentMarkers = [];
 
-  console.log("Station data loaded in map.js:", stationsWithCoordinates);
+function addMarkersForStation(station) {
+  clearMarkers();
 
   Object.keys(stationsWithCoordinates).forEach((borough) => {
     const stations = stationsWithCoordinates[borough];
     Object.keys(stations).forEach((stationName) => {
-      const coords = stations[stationName];
-      if (!coords) {
-        console.error(`No coordinates for station: ${stationName}`);
-        return;
-      }
+      if (station && stationName !== station) return;
 
+      const coords = stations[stationName];
       const marker = L.marker(coords).addTo(map);
-      console.log(`Marker added for station: ${stationName} at ${coords}`);
+      currentMarkers.push(marker);
 
       marker.bindPopup(`
         <strong>${stationName}</strong><br>
@@ -33,10 +28,11 @@ try {
       `);
     });
   });
+}
 
-  console.log("All markers added successfully.");
-} catch (error) {
-  console.error("Error initializing the map:", error);
+function clearMarkers() {
+  currentMarkers.forEach((marker) => map.removeLayer(marker));
+  currentMarkers = [];
 }
 
 window.viewReports = (station) => {
@@ -46,3 +42,5 @@ window.viewReports = (station) => {
 window.submitReport = (station) => {
   window.location.href = `report.html?station=${encodeURIComponent(station)}`;
 };
+
+addMarkersForStation(null);
