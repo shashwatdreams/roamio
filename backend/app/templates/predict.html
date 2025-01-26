@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home - Roamio</title>
+  <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/dashboard">Dashboard</a>
+      <a href="/report">Submit Report</a>
+      <a href="/map">Map</a>
+      <a href="/predict">Predict</a>
+    </nav>
+  </header>
+  <main>
+    <h1>Welcome to Roamio</h1>
+    <p>Track and report crowd levels on NYC subway systems.</p>
+    <div>
+      <a href="/dashboard" class="button">Dashboard</a>
+      <a href="/report" class="button">Submit a Report</a>
+      <a href="/map" class="button">Map</a>
+      <a href="/predict" class="button">Predict</a>
+    </div>
+
+    <!-- Embed the Streamlit app -->
+    <section>
+      <iframe 
+        src="https://subwayprediction-em4b6d6sahvf68bjxqhvxt.streamlit.app/" 
+        style="width: 100%; height: 80vh; border: none; margin-top: 20px;">
+      </iframe>
+    </section>
+  </main>
+</body>
+</html>
