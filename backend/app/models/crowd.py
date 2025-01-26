@@ -1,4 +1,3 @@
-from datetime import datetime
 from backend.app.db import db
 
 crowd_collection = db["crowd_reports"]
