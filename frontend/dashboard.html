@@ -8,15 +8,19 @@
 </head>
 <body>
   <header>
-    <h1>Dashboard</h1>
-    <p>Current crowd data:</p>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="report.html">Submit Report</a>
+    </nav>
   </header>
   <main>
- 
+    <h1>Dashboard</h1>
+    <button onclick="window.location.href='index.html'" class="back-home-button">Back to Home</button>
+    <p>Current crowd data from the last 30 minutes:</p>
     <div id="loading-indicator" style="display: none;">Loading...</div>
-
     <ul id="crowd-data"></ul>
   </main>
-  <script type="module" src="js/dashboard.js"></script>
+  <script src="js/dashboard.js" type="module"></script>
 </body>
 </html>

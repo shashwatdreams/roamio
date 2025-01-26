@@ -25,10 +25,7 @@ document.getElementById("borough").addEventListener("change", (e) => {
   const borough = e.target.value;
   const stationSelect = document.getElementById("station");
 
-
   stationSelect.innerHTML = `<option value="">Select a station</option>`;
-
-
   if (stationsByBorough[borough]) {
     stationsByBorough[borough].forEach((station) => {
       const option = document.createElement("option");
@@ -38,7 +35,6 @@ document.getElementById("borough").addEventListener("change", (e) => {
     });
   }
 });
-
 
 document.getElementById("crowd-report-form").addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -62,7 +58,6 @@ document.getElementById("crowd-report-form").addEventListener("submit", async (e
   submitButton.textContent = "Submitting...";
 
   try {
-    
     await postData(`${API_BASE}/report_crowd`, { station, crowd_level: crowdLevel });
     alert("Report submitted successfully!");
     document.getElementById("crowd-report-form").reset();
@@ -70,8 +65,7 @@ document.getElementById("crowd-report-form").addEventListener("submit", async (e
     console.error("Error submitting report:", error);
     alert("Failed to submit report. Please try again.");
   } finally {
-    
     submitButton.disabled = false;
-    submitButton.textContent = "Submit Report";
+    submitButton.textContent = "Submit";
   }
 });
