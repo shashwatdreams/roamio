@@ -30,71 +30,59 @@ const stationsWithCoordinates = {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
-
   const boroughSelect = document.getElementById("borough");
-  if (boroughSelect) {
-    boroughSelect.addEventListener("change", (e) => {
-      const borough = e.target.value;
-      const stationSelect = document.getElementById("station");
-
-      stationSelect.innerHTML = `<option value="">Select a station</option>`;
-      if (stationsWithCoordinates[borough]) {
-        Object.keys(stationsWithCoordinates[borough]).forEach((station) => {
-          const option = document.createElement("option");
-          option.value = station;
-          option.textContent = station;
-          stationSelect.appendChild(option);
-        });
-      }
-    });
-  } else {
-    console.error("Element with id 'borough' not found in the DOM.");
-  }
-
+  const stationSelect = document.getElementById("station");
   const crowdReportForm = document.getElementById("crowd-report-form");
-  if (crowdReportForm) {
-    crowdReportForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
 
-      const borough = document.getElementById("borough").value;
-      const station = document.getElementById("station").value;
-      const crowdLevel = parseInt(
-        document.getElementById("crowd-level").value,
-        10
-      );
+  // Populate stations when a borough is selected
+  boroughSelect.addEventListener("change", () => {
+    const borough = boroughSelect.value;
 
-      if (!borough || !station) {
-        alert("Please select a borough and a station.");
-        return;
-      }
+    stationSelect.innerHTML = `<option value="">Choose Station</option>`;
+    if (stationsWithCoordinates[borough]) {
+      Object.keys(stationsWithCoordinates[borough]).forEach((station) => {
+        const option = document.createElement("option");
+        option.value = station;
+        option.textContent = station;
+        stationSelect.appendChild(option);
+      });
+    }
+  });
 
-      if (isNaN(crowdLevel) || crowdLevel < 1 || crowdLevel > 5) {
-        alert("Please enter a valid crowd level between 1 and 5.");
-        return;
-      }
+  // Handle form submission
+  crowdReportForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-      const submitButton = document.querySelector("button[type='submit']");
-      submitButton.disabled = true;
-      submitButton.textContent = "Submitting...";
+    const borough = boroughSelect.value;
+    const station = stationSelect.value;
+    const crowdLevel = parseInt(document.getElementById("crowd-level").value, 10);
 
-      try {
-        await postData(`${API_BASE}/report_crowd`, {
-          station,
-          crowd_level: crowdLevel,
-        });
-        alert("Report submitted successfully!");
-        crowdReportForm.reset();
-      } catch (error) {
-        console.error("Error submitting report:", error);
-        alert("Failed to submit report. Please try again.");
-      } finally {
-        submitButton.disabled = false;
-        submitButton.textContent = "Submit";
-      }
-    });
-  } else {
-    console.error("Element with id 'crowd-report-form' not found in the DOM.");
-  }
+    if (!borough || !station) {
+      alert("Please select a borough and station.");
+      return;
+    }
+
+    if (isNaN(crowdLevel) || crowdLevel < 1 || crowdLevel > 5) {
+      alert("Please enter a valid crowd level between 1 and 5.");
+      return;
+    }
+
+    const submitButton = e.target.querySelector("button[type='submit']");
+    submitButton.disabled = true;
+    submitButton.textContent = "Submitting...";
+
+    try {
+      await postData(`${API_BASE}/report_crowd`, { station, crowd_level: crowdLevel });
+      alert("Report submitted successfully!");
+      crowdReportForm.reset();
+    } catch (error) {
+      console.error("Error submitting report:", error);
+      alert("Failed to submit report. Please try again.");
+    } finally {
+      submitButton.disabled = false;
+      submitButton.textContent = "Submit";
+    }
+  });
 });
 
 export { stationsWithCoordinates };

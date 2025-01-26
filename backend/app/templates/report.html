@@ -13,12 +13,10 @@
       <a href="{{ url_for('dashboard') }}">Dashboard</a>
       <a href="{{ url_for('report') }}">Submit Report</a>
       <a href="{{ url_for('map_view') }}">Map</a>
-  </nav>
-  {% block content %}{% endblock %}
+    </nav>
   </header>
   <main>
     <h1>Submit a Report</h1>
-    <button onclick="window.location.href='{{ url_for('home') }}'" class="back-home-button">Back to Home</button>
     <form id="crowd-report-form">
       <label for="borough">Select Borough:</label>
       <select id="borough">
