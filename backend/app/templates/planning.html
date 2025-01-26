@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subway Traffic Planner</title>
+</head>
+<body>
+    <h1>Subway Traffic Planner</h1>
+    <form id="traffic-form">
+        <label for="date_time">Date and Time (YYYY-MM-DD HH:MM):</label>
+        <input type="text" id="date_time" name="date_time" required>
+        <br><br>
+        <label for="start_stop">Starting Subway Stop:</label>
+        <input type="text" id="start_stop" name="start_stop" required>
+        <br><br>
+        <label for="end_stop">Ending Subway Stop:</label>
+        <input type="text" id="end_stop" name="end_stop" required>
+        <br><br>
+        <button type="button" onclick="predictTraffic()">Predict</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+        async function predictTraffic() {
+            const date_time = document.getElementById('date_time').value;
+            const start_stop = document.getElementById('start_stop').value;
+            const end_stop = document.getElementById('end_stop').value;
+
+            const response = await fetch('/api/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ date_time, start_stop, end_stop }),
+            });
+
+            const data = await response.json();
+            const resultDiv = document.getElementById('result');
+
+            if (data.Error) {
+                resultDiv.innerHTML = `<p style="color: red;">Error: ${data.Error}</p>`;
+            } else {
+                resultDiv.innerHTML = `
+                    <h2>Prediction:</h2>
+                    <p><strong>Start Stop (${start_stop}):</strong></p>
+                    <p>Average Entries: ${data['Start Stop']['Avg_Entries']}</p>
+                    <p>Average Exits: ${data['Start Stop']['Avg_Exits']}</p>
+                    <p><strong>End Stop (${end_stop}):</strong></p>
+                    <p>Average Entries: ${data['End Stop']['Avg_Entries']}</p>
+                    <p>Average Exits: ${data['End Stop']['Avg_Exits']}</p>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>
