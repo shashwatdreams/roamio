@@ -1,5 +1,3 @@
-import { fetchData, API_BASE } from "./app.js";
-
 const loadingIndicator = document.getElementById("loading-indicator");
 const boroughSelect = document.getElementById("borough-select");
 const stationSelect = document.getElementById("station-select");
@@ -38,27 +36,22 @@ async function updateDashboard() {
   loadingIndicator.style.display = "block";
   try {
     const data = await fetchData(`${API_BASE}?minutes=30`);
-
     reportContainer.innerHTML = "";
-
     if (data.length > 0) {
       const groupedData = groupReportsByBoroughAndStation(data);
-
-      boroughSelect.innerHTML = `<option value="">Select a Borough</option>`; 
+      boroughSelect.innerHTML = `<option value="">Select a Borough</option>`;
       Object.keys(groupedData).forEach((borough) => {
         const option = document.createElement("option");
         option.value = borough;
         option.textContent = capitalizeFirstLetter(borough);
         boroughSelect.appendChild(option);
       });
-
       boroughSelect.addEventListener("change", (e) => {
         const borough = e.target.value;
         if (borough) {
           populateStationsDropdown(groupedData[borough]);
         }
       });
-
       stationSelect.addEventListener("change", (e) => {
         const station = e.target.value;
         if (station) {

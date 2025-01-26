@@ -1,4 +1,4 @@
-from ..models.crowd import crowd_collection
+from backend.app.models.crowd import crowd_collection
 from datetime import datetime, timedelta
 
 def get_recent_crowd_reports(station, time_window=60):

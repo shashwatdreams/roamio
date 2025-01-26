@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from ..models.crowd import CrowdReport, crowd_collection
+from backend.app.models.crowd import CrowdReport, crowd_collection
 from datetime import datetime, timedelta
 
 crowd_reporting_bp = Blueprint("crowd_reporting", __name__)
