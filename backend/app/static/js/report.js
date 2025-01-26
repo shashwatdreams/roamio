@@ -1,18 +1,4 @@
-const API_BASE = "http://localhost:5001/api/crowd";
-
-async function postData(url, data) {
-  const response = await fetch(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-  });
-  if (!response.ok) throw new Error("Failed to submit data");
-  return await response.json();
-}
-
-const boroughSelect = document.getElementById("borough");
-const stationSelect = document.getElementById("station");
-const crowdReportForm = document.getElementById("crowd-report-form");
+import { postData, API_BASE } from "./app.js";
 
 const stationsWithCoordinates = {
   manhattan: {
@@ -43,49 +29,60 @@ const stationsWithCoordinates = {
   },
 };
 
-boroughSelect.addEventListener("change", () => {
-  const borough = boroughSelect.value;
-  stationSelect.innerHTML = `<option value="">Choose Station</option>`;
-  if (stationsWithCoordinates[borough]) {
-    Object.keys(stationsWithCoordinates[borough]).forEach((station) => {
-      const option = document.createElement("option");
-      option.value = station;
-      option.textContent = station;
-      stationSelect.appendChild(option);
-    });
-  }
+document.addEventListener("DOMContentLoaded", () => {
+  const boroughSelect = document.getElementById("borough");
+  const stationSelect = document.getElementById("station");
+  const crowdReportForm = document.getElementById("crowd-report-form");
+
+  // Populate stations when a borough is selected
+  boroughSelect.addEventListener("change", () => {
+    const borough = boroughSelect.value;
+
+    stationSelect.innerHTML = `<option value="">Choose Station</option>`;
+    if (stationsWithCoordinates[borough]) {
+      Object.keys(stationsWithCoordinates[borough]).forEach((station) => {
+        const option = document.createElement("option");
+        option.value = station;
+        option.textContent = station;
+        stationSelect.appendChild(option);
+      });
+    }
+  });
+
+  // Handle form submission
+  crowdReportForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const borough = boroughSelect.value;
+    const station = stationSelect.value;
+    const crowdLevel = parseInt(document.getElementById("crowd-level").value, 10);
+
+    if (!borough || !station) {
+      alert("Please select a borough and station.");
+      return;
+    }
+
+    if (isNaN(crowdLevel) || crowdLevel < 1 || crowdLevel > 5) {
+      alert("Please enter a valid crowd level between 1 and 5.");
+      return;
+    }
+
+    const submitButton = e.target.querySelector("button[type='submit']");
+    submitButton.disabled = true;
+    submitButton.textContent = "Submitting...";
+
+    try {
+      await postData(`${API_BASE}/report_crowd`, { station, crowd_level: crowdLevel });
+      alert("Report submitted successfully!");
+      crowdReportForm.reset();
+    } catch (error) {
+      console.error("Error submitting report:", error);
+      alert("Failed to submit report. Please try again.");
+    } finally {
+      submitButton.disabled = false;
+      submitButton.textContent = "Submit";
+    }
+  });
 });
 
-crowdReportForm.addEventListener("submit", async (e) => {
-  e.preventDefault();
-
-  const borough = boroughSelect.value;
-  const station = stationSelect.value;
-  const crowdLevel = parseInt(document.getElementById("crowd-level").value, 10);
-
-  if (!borough || !station) {
-    alert("Please select a borough and station.");
-    return;
-  }
-
-  if (isNaN(crowdLevel) || crowdLevel < 1 || crowdLevel > 5) {
-    alert("Please enter a valid crowd level between 1 and 5.");
-    return;
-  }
-
-  const submitButton = e.target.querySelector("button[type='submit']");
-  submitButton.disabled = true;
-  submitButton.textContent = "Submitting...";
-
-  try {
-    await postData(`${API_BASE}/report_crowd`, { station, crowd_level: crowdLevel });
-    alert("Report submitted successfully!");
-    crowdReportForm.reset();
-  } catch (error) {
-    console.error("Error submitting report:", error);
-    alert("Failed to submit report. Please try again.");
-  } finally {
-    submitButton.disabled = false;
-    submitButton.textContent = "Submit";
-  }
-});
+export { stationsWithCoordinates };
