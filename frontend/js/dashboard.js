@@ -4,11 +4,16 @@ const crowdList = document.getElementById("crowd-data");
 const loadingIndicator = document.getElementById("loading-indicator");
 
 async function updateDashboard() {
-  loadingIndicator.style.display = "block"; 
+  loadingIndicator.style.display = "block";
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const stationFilter = urlParams.get("station");
+  const apiUrl = stationFilter
+    ? `${API_BASE}?station=${encodeURIComponent(stationFilter)}`
+    : `${API_BASE}?minutes=30`;
 
   try {
-    const data = await fetchData(`${API_BASE}?minutes=30`);
-
+    const data = await fetchData(apiUrl);
     crowdList.innerHTML = "";
 
     if (data.length > 0) {
@@ -22,13 +27,13 @@ async function updateDashboard() {
         crowdList.appendChild(listItem);
       });
     } else {
-      crowdList.innerHTML = "<p>No reports in the past 30 minutes.</p>";
+      crowdList.innerHTML = "<p>No reports available.</p>";
     }
   } catch (error) {
     console.error("Error fetching data:", error);
     crowdList.innerHTML = `<p style="color: red;">Failed to load data.</p>`;
   } finally {
-    loadingIndicator.style.display = "none"; 
+    loadingIndicator.style.display = "none";
   }
 }
 

@@ -3,8 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard</title>
+  <title>NYC Subway Map</title>
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>  
+  <style>
+    #map {
+      height: 80vh;
+      width: 100%;
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -16,12 +24,9 @@
     </nav>
   </header>
   <main>
-    <h1>Dashboard</h1>
-    <button onclick="window.location.href='index.html'" class="back-home-button">Back to Home</button>
-    <p>Current crowd data from the last 30 minutes:</p>
-    <div id="loading-indicator" style="display: none;">Loading...</div>
-    <ul id="crowd-data"></ul>
+    <h1>NYC Subway Map</h1>
+    <div id="map"></div>
   </main>
-  <script src="js/dashboard.js" type="module"></script>
+  <script src="js/map.js" type="module"></script>
 </body>
 </html>
