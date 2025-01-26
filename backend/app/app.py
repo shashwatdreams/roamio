@@ -11,7 +11,7 @@ app = Flask(
 
 CORS(app, resources={r"/api/*": {"origins": "*"}})
 
-data = pd.read_csv('data/NYC_subway_traffic_2017-2021.csv')
+data = pd.read_csv('NYC_subway_traffic_2017-2021.csv')
 
 # Preprocess the data
 data['Datetime'] = pd.to_datetime(data['Datetime'], format='%m/%d/%Y %H:%M', errors='coerce')
