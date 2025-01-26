@@ -4,7 +4,7 @@ import os
 
 app = Flask(
     __name__,
-    template_folder="templates",  # Use the templates folder for HTML files
+    template_folder="templates",
 )
 
 CORS(app, resources={r"/api/*": {"origins": "*"}})
