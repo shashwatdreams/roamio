@@ -1,15 +1,21 @@
 import streamlit as st
 import pandas as pd
+from pathlib import Path
 from datetime import datetime
 
 # Load the dataset
 @st.cache_data
 def load_data():
-    chunks = []
-    for chunk in pd.read_csv("subway_data.csv", chunksize=100000):  # Adjust chunksize as needed
-        chunks.append(chunk)
-    return pd.concat(chunks, ignore_index=True)
-
+    try:
+        file_path = Path("subway.csv")
+        if file_path.exists():
+            return pd.read_csv(file_path)
+        else:
+            st.error("Dataset file 'subway.csv' not found. Please ensure the file is placed in the correct directory.")
+            return pd.DataFrame()
+    except Exception as e:
+        st.error(f"An error occurred while loading the data: {e}")
+        return pd.DataFrame()
 
 aggregated_data = load_data()
 
