@@ -9,15 +9,16 @@
 <body>
   <header>
     <nav>
-      <a href="index.html">Home</a>
-      <a href="dashboard.html">Dashboard</a>
-      <a href="report.html">Submit Report</a>
-      <a href="map.html">Map</a> <!-- Added Map link -->
-    </nav>
+      <a href="{{ url_for('home') }}">Home</a>
+      <a href="{{ url_for('dashboard') }}">Dashboard</a>
+      <a href="{{ url_for('report') }}">Submit Report</a>
+      <a href="{{ url_for('map_view') }}">Map</a>
+  </nav>
+  {% block content %}{% endblock %}
   </header>
   <main>
     <h1>Submit a Report</h1>
-    <button onclick="window.location.href='index.html'" class="back-home-button">Back to Home</button>
+    <button onclick="window.location.href='{{ url_for('home') }}'" class="back-home-button">Back to Home</button>
     <form id="crowd-report-form">
       <label for="borough">Select Borough:</label>
       <select id="borough">
