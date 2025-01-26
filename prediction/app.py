@@ -5,11 +5,11 @@ from datetime import datetime
 # Load the dataset
 @st.cache_data
 def load_data():
-    try:
-        return pd.read_csv("subway.csv")
-    except FileNotFoundError:
-        st.error("Dataset file 'subway_data.csv' not found. Please ensure the file is placed in the correct directory.")
-        return pd.DataFrame()
+    chunks = []
+    for chunk in pd.read_csv("subway_data.csv", chunksize=100000):  # Adjust chunksize as needed
+        chunks.append(chunk)
+    return pd.concat(chunks, ignore_index=True)
+
 
 aggregated_data = load_data()
 
