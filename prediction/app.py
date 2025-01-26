@@ -4,20 +4,7 @@ from pathlib import Path
 from datetime import datetime
 
 # Load the dataset
-@st.cache_data
-def load_data():
-    try:
-        file_path = Path("subway.csv")
-        if file_path.exists():
-            return pd.read_csv(file_path)
-        else:
-            st.error("Dataset file 'subway.csv' not found. Please ensure the file is placed in the correct directory.")
-            return pd.DataFrame()
-    except Exception as e:
-        st.error(f"An error occurred while loading the data: {e}")
-        return pd.DataFrame()
-
-aggregated_data = load_data()
+data = pd.read_csv('subway.csv')
 
 # Prediction function
 def predict_subway_traffic(date_time, start_stop, end_stop):
