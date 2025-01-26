@@ -3,13 +3,17 @@ import pandas as pd
 from datetime import datetime
 
 # Load the dataset
-@st.cache
+@st.cache_data
 def load_data():
-    return pd.read_csv("subway_data.csv")
+    try:
+        return pd.read_csv("subway_data.csv")
+    except FileNotFoundError:
+        st.error("Dataset file 'subway_data.csv' not found. Please ensure the file is placed in the correct directory.")
+        return pd.DataFrame()
 
 aggregated_data = load_data()
 
-# prediction function
+# Prediction function
 def predict_subway_traffic(date_time, start_stop, end_stop):
     try:
         # parsing date & time
@@ -68,9 +72,13 @@ def predict_subway_traffic(date_time, start_stop, end_stop):
 
     return prediction
 
+# Streamlit App
 st.title("Subway Traffic Predictor")
 
 st.write("Predict the average entries and exits for subway stops based on historical data.")
+
+if aggregated_data.empty:
+    st.stop()
 
 date_time = st.text_input("Enter the date and time (YYYY-MM-DD HH:MM):")
 start_stop = st.text_input("Enter the starting subway stop:")
