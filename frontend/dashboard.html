@@ -18,9 +18,21 @@
   <main>
     <h1>Dashboard</h1>
     <button onclick="window.location.href='index.html'" class="back-home-button">Back to Home</button>
-    <p>Current crowd data from the last 30 minutes:</p>
+    <p>Select a Borough and Station to view crowd reports from the last 30 minutes:</p>
+
     <div id="loading-indicator" style="display: none;">Loading...</div>
-    <ul id="crowd-data"></ul>
+
+    <label for="borough-select">Borough:</label>
+    <select id="borough-select">
+      <option value="">Select a Borough</option>
+    </select>
+
+    <label for="station-select">Station:</label>
+    <select id="station-select">
+      <option value="">Select a Station</option>
+    </select>
+
+    <div id="report-container"></div>
   </main>
   <script src="js/dashboard.js" type="module"></script>
 </body>
