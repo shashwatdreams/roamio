@@ -8,7 +8,7 @@ const stationsWithCoordinates = {
     "Times Square - 42nd St": [40.755290, -73.987495],
     "Grand Central - 42nd St": [40.752726, -73.977229],
     "125th St": [40.804138, -73.937594],
-    "Columbus Circle - 59th St": [40.768247, -73.981929],
+    "Columbus Circle - 59th St": [40.768247, -73.981929],gi
   },
   queens: {
     "Flushing - Main St": [40.759599, -73.830314],
